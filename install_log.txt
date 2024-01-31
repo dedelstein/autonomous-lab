@@ -2,7 +2,8 @@ sudo apt install /
 	vim /
 	tldr /
 	tmux /
-	xclip
+	xclip /
+	gh
 
 -- ROS setup:
 
