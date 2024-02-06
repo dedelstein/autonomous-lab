@@ -1,0 +1,5 @@
+<!-- LIDAR node init -->
+ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.0.2
+
+<!-- FLIR node init -->
+ros2 launch spinnaker_camera_driver driver_node.launch.py camera_type:=chameleon serial:='20073275'"

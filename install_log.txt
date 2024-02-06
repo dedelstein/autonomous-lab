@@ -72,3 +72,7 @@ colcon build --packages-select msgpack11 --cmake-args " -DMSGPACK11_BUILD_TESTS=
 source ./install/setup.bash
 colcon build --packages-select sick_scan_xd --cmake-args " -DROS_VERSION=2" --event-handlers console_direct+
 source ./install/setup.bash
+
+-- FLIR camera
+
+sudo apt install ros-iron-spinnaker-camera-driver
