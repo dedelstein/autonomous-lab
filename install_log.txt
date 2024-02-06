@@ -55,6 +55,7 @@ sudo apt install nvidia-container-toolkit
 sudo apt-get install python3-rocker
 
 -- Installing SICK LIDAR ROS2 drivers
+(ref: https://github.com/SICKAG/sick_scan_xd/blob/master/GETTINGSTARTED.md)
 sudo apt install ros-iron-diagnostic-updater
 mkdir -p ./sick_scan_ws
 cd ./sick_scan_ws
