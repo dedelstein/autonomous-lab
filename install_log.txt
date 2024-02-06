@@ -54,3 +54,20 @@ sudo apt update
 sudo apt install nvidia-container-toolkit
 sudo apt-get install python3-rocker
 
+-- Installing SICK LIDAR ROS2 drivers
+sudo apt install ros-iron-diagnostic-updater
+mkdir -p ./sick_scan_ws
+cd ./sick_scan_ws
+mkdir ./src
+pushd ./src
+git clone https://github.com/SICKAG/libsick_ldmrs.git
+git clone https://github.com/SICKAG/msgpack11.git
+git clone https://github.com/SICKAG/sick_scan_xd.git
+popd
+
+colcon build --packages-select libsick_ldmrs --event-handlers console_direct+
+source ./install/setup.bash
+colcon build --packages-select msgpack11 --cmake-args " -DMSGPACK11_BUILD_TESTS=0" --event-handlers console_direct+
+source ./install/setup.bash
+colcon build --packages-select sick_scan_xd --cmake-args " -DROS_VERSION=2" --event-handlers console_direct+
+source ./install/setup.bash
