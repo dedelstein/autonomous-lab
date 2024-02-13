@@ -76,3 +76,4 @@ source ./install/setup.bash
 -- FLIR camera
 
 sudo apt install ros-iron-spinnaker-camera-driver
+sudo apt install ros-iron-robot-localization
