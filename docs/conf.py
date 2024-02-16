@@ -1,9 +1,28 @@
-# Bare minimum conf.py file
+# Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-project = 'Autonomous Lab Bench'
-author = 'Dan Edelstein'
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+project = 'AutonomousLabBench'
+copyright = '2024, Dan Edelstein, Pyry Weckman, Oskari Jutila, Ollimati Särkelä, Joona Päivärinne'
+author = 'Dan Edelstein, Pyry Weckman, Oskari Jutila, Ollimati Särkelä, Joona Päivärinne'
+release = '1'
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
 extensions = []
+
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
 html_theme = 'alabaster'
 html_static_path = ['_static']
