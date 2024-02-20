@@ -1,17 +1,18 @@
 # Autonomous Lab Bench Documentation
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This is a user guide for the Autonomous Lab Bench Education Project.  
 
 ## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
 * `mkdocs serve` - Start the live-reloading docs server.
 * `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
 
 ## Project layout
 
-    mkdocs.yml    # The configuration file.
+    mkdocs.yml    # The configuration file
     docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+        index.md		# Documentation homepage
+		software.md		# Overview of project software architecture
+		hardware.md		# Overview of project hardware architecture
+		about.md		# About this project
+		editing.md		# How to edit this documentation
