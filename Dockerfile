@@ -19,7 +19,13 @@ RUN \
 	gh \
         wget \
         cmake \
+	python3-pip \
     && apt autoremove -y
+
+# pip setup
+RUN \
+    echo "export PATH=\"$HOME/.local/bin:$PATH" >> ~/.bashrc \
+    && pip install mkdocs
 
 # Locale setup
 RUN \
