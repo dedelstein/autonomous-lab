@@ -4,8 +4,8 @@ This is a user guide for the Autonomous Lab Bench Education Project.
 
 ## Commands
 
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
+* `mkdocs serve` - Run this command from the project dir to start the live-reloading docs server.
+<!--* `mkdocs build` - Build the documentation site.-->
 
 ## Project layout
 
