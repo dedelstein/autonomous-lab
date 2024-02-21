@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="FLIR_dims" value="0.1 0.1 0.1"/>
+    <xacro:property name="FLIR_xyz" value="0.0 0.0 2.0"/>
+    <xacro:property name="FLIR_rot" value="0.0 0.0 0.0"/>
+
+    <!-- FLIR Link-->
+    <link name="FLIR" type="fixed">
+        <visual>
+            <geometry>
+                <box size="${FLIR_dims}"/>
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="FLIR_joint" type="fixed">
+        <parent link="bench_joint"/>
+        <child link="FLIR"/>
+        <origin xyz="${FLIR_xyz}" rpy="${FLIR_rot}"/>
+    </joint>
+</robot>

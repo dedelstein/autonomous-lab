@@ -11,15 +11,15 @@ RUN \
     && apt install -y software-properties-common \
     && apt update \
     && apt install -y \
-        curl \
-    	vim \
-	tldr \
-	tmux \
-	xclip \
-	gh \
-        wget \
-        cmake \
-	python3-pip \
+		curl \
+		vim \
+		tldr \
+		tmux \
+		xclip \
+		gh \
+		wget \
+		cmake \
+		python3-pip \
     && apt autoremove -y
 
 # pip setup
@@ -46,10 +46,12 @@ RUN \
     && echo "source /opt/ros/iron/setup.bash" >> ~/.bashrc
 
 
-# Install FLIR driver and other ROS drivers
+# Install ROS utilities and drivers
 RUN \
     apt update \
     && apt install -y \
+		ros-iron-xacro \
+		ros-iron-joint-state-publisher-gui \
         ros-iron-spinnaker-camera-driver
 
 # Install CUDA toolkit
