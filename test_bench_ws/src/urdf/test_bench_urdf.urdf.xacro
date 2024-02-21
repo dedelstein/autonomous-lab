@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<robot name="Test_Bench" xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-    <xacro:include filename="test_bench_core.xacro"/>
-    <xacro:include filename="FLIR.xacro"/>
-    <xacro:include filename="LIDAR.xacro"/> 
-
-</robot>
