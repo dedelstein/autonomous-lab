@@ -9,11 +9,14 @@ from launch_ros.actions import Node
 
 import xacro
 
+
 def generate_launch_description():
+
+    # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('test_bench'))
     xacro_file = os.path.join(pkg_path,'urdf','test_bench.urdf.xacro')
     robot_description_config = Command(['xacro ', xacro_file])
-    
+                                       
     # Create a robot_state_publisher node
     params = {'robot_description': robot_description_config}
     node_robot_state_publisher = Node(
@@ -23,6 +26,7 @@ def generate_launch_description():
         parameters=[params]
     )
 
+    # Launch the robot_state_publisher node
     return LaunchDescription([
         node_robot_state_publisher
     ])
