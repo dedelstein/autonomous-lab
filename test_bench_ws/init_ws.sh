@@ -4,7 +4,7 @@
 
 git submodule update --init && \
 colcon build --packages-select libsick_ldmrs --event-handlers console_direct+ && \
-source /opt/ros/humble/setup.bash && \
+source /opt/ros/iron/setup.bash && \
 source ./install/setup.bash && \
 colcon build --packages-select sick_scan_xd --cmake-args " -DROS_VERSION=2" --event-handlers console_direct+ && \
 source ./install/setup.bash && \
