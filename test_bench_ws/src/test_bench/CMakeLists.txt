@@ -8,8 +8,8 @@ endif()
 # Below are all package dependencies for the test bench,
 # add to this list as needed
 find_package(ament_cmake REQUIRED)
-find_package(spinnaker_camera_driver REQUIRED)
-find_package(sick_scan_xd REQUIRED)
+#find_package(spinnaker_camera_driver REQUIRED)
+#find_package(sick_scan_xd REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 if(BUILD_TESTING)
