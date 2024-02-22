@@ -52,7 +52,9 @@ RUN \
     && apt install -y \
 		ros-iron-xacro \
 		ros-iron-joint-state-publisher-gui \
-        ros-iron-spinnaker-camera-driver
+        ros-iron-spinnaker-camera-driver \
+		ros-iron-diagnostic-updater \
+		ros-iron-diagnostic-msgs
 
 # Install CUDA toolkit
 RUN \
