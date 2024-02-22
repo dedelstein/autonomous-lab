@@ -7,7 +7,7 @@ Drivers:
  - [sick_scan_xd](https://github.com/SICKAG/sick_scan_xd/)  
  - [spinnaker camera driver](https://index.ros.org/p/spinnaker_camera_driver/)  
 
-## Setup:
+## Setup
 ### Setting up Host Machine
 
 Install Ubuntu 22.04, update, & install necessary software:  
@@ -50,21 +50,36 @@ sudo apt-get install python3-rocker
 sudo apt-get install git-all
 ```
 
-### Setting up the Test Bench
-```bash
-# Clone the remote git repository
-git clone https://github.com/dedelstein/autonomous-lab.git && cd autonomous-lab
-
-# Set up the ROS workspace
-cd test_bench_ws && ./init_ws.sh
-```
-
-### To use a docker volume
+### Setting up the Test Bench with Docker
 ```bash
 # Build the docker image and create the volume (this takes time)
 sudo docker image build --tag test-bench .
 sudo docker volume create test-bench
 
 # Mount the docker volume using rocker
-sudo rocker --x11 --nvidia --privileged test-bench bash
+# NB: --privileged gives us access to ports (usb, etc.), there's fancier and more
+# secure ways to do this if someone has the time or inclination
+sudo rocker --x11 --privileged test-bench bash
+```
+
+## Usage
+
+### Test Bench ROS Nodes
+```bash
+# Navigate to the test bench workspace and source the overlay
+cd autonomous-lab/test_bench_ws  && source install/setup.bash
+
+# Launch the following nodes from separate terminal windows
+# (convenient to use tmux with multiple panes in this case)
+ros2 launch test_bench test_bench.launch.py
+ros2 launch test_bench FLIR.launch.py
+ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.0.2 frame_id:=LIDAR
+
+# To end any particular node, just type CTRL-c in a window with an active node
+```
+
+## rviz2
+```bash
+# Launch rviz2 from test_bench_ws and load the custom setup
+rviz2 -d test-bench.rviz
 ```

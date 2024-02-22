@@ -66,3 +66,10 @@ RUN \
     && apt-get update \
     && apt-get -y install cuda-toolkit-12-3 \
     && apt-get install -y cuda-drivers
+
+# Clone and initialize test bench workspace
+RUN \
+    git clone https://github.com/dedelstein/autonomous-lab.git \
+    && cd autonomous-lab/test_bench_ws \
+    && source /opt/ros/iron/setup.bash \
+    && ./init_ws.sh
