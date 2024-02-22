@@ -81,5 +81,5 @@ ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.0.2 frame_id:
 ## rviz2
 ```bash
 # Launch rviz2 from test_bench_ws and load the custom setup
-rviz2 -d test-bench.rviz
+rviz2 -d ./test-bench.rviz
 ```
