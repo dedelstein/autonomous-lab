@@ -10,7 +10,7 @@
     <xacro:property name="wheel_width" value="0.04"/>
     <xacro:property name="wheel_offset" value=".1"/>
 
-    <!-- Bench Base-->
+    <!-- Base Link, this is our origin point for all test bench joints-->
     <link name="base_link">
 
     </link>

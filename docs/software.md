@@ -7,6 +7,9 @@ Drivers:
  - [sick_scan_xd](https://github.com/SICKAG/sick_scan_xd/)  
  - [spinnaker camera driver](https://index.ros.org/p/spinnaker_camera_driver/)  
 
+Main GitHub:  
+ - [autonomous-lab](https://github.com/dedelstein/autonomous-lab)
+
 ## Setup
 ### Setting up Host Machine
 
@@ -83,3 +86,13 @@ ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.0.2 frame_id:
 # Launch rviz2 from test_bench_ws and load the custom setup
 rviz2 -d test-bench.rviz
 ```
+
+## Documentation
+
+### How Does This Work?
+
+We have a base ROS install on our host volume (if you followed the guide, this is a docker container), and then we have an 'overlay' in our test_bench_ws workspace.  If you cloned the [github project](https://github.com/dedelstein/autonomous-lab) or are using the docker container, this is at autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.  
+
+#### URDF
+
+The Unified Robot Description Format for our robot.  You can look at the files in autonomous-lab/test_bench_ws/src/test_bench/urdf/ folder to understand the current structure.  The files use [XACRO](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Using-Xacro-to-Clean-Up-a-URDF-File.html), which is just a convenient tool to add a few variables to [urdf](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html) files, which are really just xml with a few conventions.  The most important thing here is the joint structure, which we refer to in our launch files, as we need spatial context for different data sources.  ![alt text]( "TF2 frame diagram").  For example, our robot publishes data to the /cloud topic using sick_scan_xd, and we launch this driver with reference to the frame_id:=LIDAR, so that our /cloud message adds the frame information to its header and can be appropriately placed in rviz.

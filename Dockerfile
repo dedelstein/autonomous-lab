@@ -71,5 +71,4 @@ RUN \
 RUN \
     git clone https://github.com/dedelstein/autonomous-lab.git \
     && cd autonomous-lab/test_bench_ws \
-    && source /opt/ros/iron/setup.bash \
     && ./init_ws.sh
