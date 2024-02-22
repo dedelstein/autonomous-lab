@@ -7,14 +7,14 @@ def generate_launch_description():
 
     flir_node = Node(
         package = "spinnaker_camera_driver",
-        executable = "driver_node",
+        executable = "camera_driver_node",
         output='screen',
         namespace='camera',
-        parameters=[{
+        parameters={
             'camera_type': 'chameleon',
-            'serial': '20073275',
+            'serial_number': '20073275',
             'frame_id': 'FLIR'
-            }]
+            }
         )
     return LaunchDescription([
         flir_node
