@@ -24,7 +24,7 @@ RUN \
 
 # pip setup
 RUN \
-    echo "export PATH=\"$HOME/.local/bin:$PATH" >> ~/.bashrc \
+    echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> ~/.bashrc \
     && pip install mkdocs
 
 # Locale setup
