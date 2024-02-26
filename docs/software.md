@@ -91,9 +91,38 @@ rviz2 -d ./test-bench.rviz
 
 ### How Does This Work?
 
-We have a base ROS install on our host volume (if you followed the guide, this is a docker container), and then we have an 'overlay' in our test_bench_ws workspace.  If you cloned the [github project](https://github.com/dedelstein/autonomous-lab) or are using the docker container, this is at autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.
+The [Dockerfile](https://github.com/dedelstein/autonomous-lab/blob/main/Dockerfile) in the [github project](https://github.com/dedelstein/autonomous-lab) includes a set of instructions to install necessary programs and the workspace into a docker container.  This container can be mounted using rocker, which allows for gui interactivity and use of nvidia drivers.  We have a base ROS install on our host volume, and then we have an 'overlay' in our test_bench_ws workspace.  If you are using the docker container, this is at /autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.
 
 #### URDF
 
-The Unified Robot Description Format for our robot.  You can look at the files in autonomous-lab/test_bench_ws/src/test_bench/urdf/ folder to understand the current structure.  The files use [XACRO](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Using-Xacro-to-Clean-Up-a-URDF-File.html), which is just a convenient tool to add a few variables to [urdf](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html) files, which are really just xml with a few conventions.  The most important thing here is the joint structure, which we refer to in our launch files, as we need spatial context for different data sources.  ![alt text](https://raw.githubusercontent.com/dedelstein/autonomous-lab/main/docs/images/tf_diag.png "TF2 frame diagram").  
-For example, our robot publishes data to the /cloud topic using sick_scan_xd, and we launch this driver with reference to the frame_id:=LIDAR, so that our /cloud message adds the frame information to its header and can be appropriately placed in rviz.
+The Unified Robot Description Format for our robot.  You can look at the files in autonomous-lab/test_bench_ws/src/test_bench/urdf/ folder or [here](https://github.com/dedelstein/autonomous-lab/tree/main/test_bench_ws/src/test_bench/urdf) to understand the current structure.  The files use [XACRO](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Using-Xacro-to-Clean-Up-a-URDF-File.html), which is just a convenient tool to add a few variables to [urdf](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html) files, which are really just xml with a few conventions.  The most important thing here is the joint structure, which we refer to in our launch files, as we need spatial context for different data sources.  ![alt text](https://raw.githubusercontent.com/dedelstein/autonomous-lab/main/docs/images/tf_diag.png "TF2 frame diagram").  
+
+#### Packages, Nodes & Launchers
+
+ROS operates with different Nodes, that communicate with each other via messages that are divided into topics.  These nodes are launched with [command-line arguments](#test-bench-ros-nodes), which use launch files contained within each package.  A launch file should contain some snippet that looks like the following:
+```python
+def generate_launch_description():
+
+    flir_node = Node(
+        package = "spinnaker_camera_driver",
+        executable = "camera_driver_node",
+        output='screen',
+        namespace='camera',
+        # The 'parameters' block below can contain predefined parameters for the node to be launched
+        parameters=[
+            example_params,
+            {
+            'parameter_file': FLIR_params,
+            'camera_type': 'chameleon',
+            'serial_number': '20073275',
+            'frame_id': 'FLIR'
+            }]
+        )
+    return LaunchDescription([
+        flir_node
+    ])
+```
+We can also pass parameters to the launch file in our command-line argument.  These launch files create a node that publishes to a topic.  For example, our robot publishes data to the /cloud topic using sick_scan_xd, and we launch this driver with reference to the frame_id:=LIDAR, so that our /cloud topic adds the frame information from the robot_state_publisher node to its message header, which lets us use it in rviz.
+
+### Current ROS structure
+![alt text](https://raw.githubusercontent.com/dedelstein/autonomous-lab/main/docs/images/rqt_graph_26_2_2024.png "rqt_graph diagram")

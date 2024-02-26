@@ -1,11 +1,12 @@
 FROM ubuntu:jammy
 
+# Necessary environment variables, these enable the Dockerfile to be used in a non-interactive manner
 ENV ROS_DIST iron
 ENV TZ=Europe/Helsinki
 ENV DEBIAN_FRONTEND=noninteractive
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Initial setup
+# Initial setup, update/upgrade and install basic tools
 RUN \
     apt update && apt upgrade -y \
     && apt install -y software-properties-common \
@@ -22,7 +23,7 @@ RUN \
 		python3-pip \
     && apt autoremove -y
 
-# pip setup
+# pip setup & installing mkdocs for documentation
 RUN \
     echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> ~/.bashrc \
     && pip install mkdocs
