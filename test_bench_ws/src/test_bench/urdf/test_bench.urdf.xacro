@@ -3,6 +3,7 @@
 
     <xacro:include filename="test_bench_core.xacro"/>
     <xacro:include filename="FLIR.xacro"/>
-    <xacro:include filename="LIDAR.xacro"/> 
+    <xacro:include filename="LIDAR.xacro"/>
+    <xacro:include filename="REALSENSE.xacro"/> 
 
 </robot>
