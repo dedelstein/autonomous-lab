@@ -23,7 +23,7 @@
     </joint>
     
     <!-- RS Camera Link-->
-    <link name="camera" type="fixed">
+    <link name="camera_link" type="fixed">
     </link>
     <joint name="camera_joint" type="fixed">
         <parent link="RS"/>
