@@ -55,7 +55,8 @@ RUN \
 	ros-iron-joint-state-publisher-gui \
         ros-iron-spinnaker-camera-driver \
 	ros-iron-diagnostic-updater \
-	ros-iron-diagnostic-msgs
+	ros-iron-diagnostic-msgs \
+ 	ros-iron-image-transport-plugins
 
 # Install CUDA toolkit
 #RUN \
