@@ -76,7 +76,7 @@ cd autonomous-lab/test_bench_ws  && source install/setup.bash
 # (convenient to use tmux with multiple panes in this case)
 ros2 launch test_bench test_bench.launch.py
 ros2 launch test_bench FLIR.launch.py
-ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.0.2 frame_id:=LIDAR
+ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.1.18 frame_id:=LIDAR
 
 # To end any particular node, just type CTRL-c in a window with an active node
 ```
