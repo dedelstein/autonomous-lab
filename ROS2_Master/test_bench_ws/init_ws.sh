@@ -2,7 +2,6 @@
 
 # This script is used to initialize the workspace for the first time
 
-git submodule update --init && \
 colcon build --packages-select libsick_ldmrs --event-handlers console_direct+ && \
 source /opt/ros/iron/setup.bash && \
 source ./install/setup.bash && \

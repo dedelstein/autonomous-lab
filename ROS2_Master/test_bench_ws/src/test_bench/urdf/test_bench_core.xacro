@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- Test Bench Properties-->
-    <xacro:property name="bench_width" value="1.2"/>
-    <xacro:property name="bench_length" value=".6"/>
-    <xacro:property name="bench_height" value=".5"/>
+    <!-- Test Bench Properties, Values in Meters-->
+    <xacro:property name="bench_width" value="1.198"/>
+    <xacro:property name="bench_depth" value=".7"/>
+    <xacro:property name="bench_base_height" value=".804"/>
+    <xacro:property name="bench_wall_height" value=".808"/>
+    <xacro:property name="bench_wall_depth" value=".063"/>
 
-    <xacro:property name="wheel_radius" value="0.10"/>
-    <xacro:property name="wheel_width" value="0.04"/>
-    <xacro:property name="wheel_offset" value=".1"/>
+    <xacro:property name="wheel_radius" value="0.0625"/>
+    <xacro:property name="wheel_offset" value=".031"/>
 
     <!-- Base Link, this is our origin point for all test bench joints-->
     <link name="base_link">
@@ -19,7 +20,7 @@
     <link name="bench_footprint" type="fixed">
         <visual>
             <geometry>
-                <box size="${bench_length} ${bench_width} ${bench_height}"/>
+                <box size="${bench_length} ${(bench_depth + bench_wall_depth)} ${(bench_base_height+bench_wall_height)}"/>
             </geometry>
             <material name="Cyan">
                 <color rgba="0 1.0 1.0 1.0"/>
@@ -30,6 +31,13 @@
         <parent link="base_link"/>
         <child link="bench_footprint"/>
         <origin xyz="0.0 0.0 ${(wheel_radius*2+wheel_offset)}" rpy="0 0 0"/>
+    </joint>
+    <link name="zero_point" type="fixed">
+    </link>
+        <joint name="zero_joint" type="fixed">
+        <parent link="bench_footprint"/>
+        <child link="zero_point"/>
+        <origin xyz="{(-bench_width/2)} {(-(bench_depth + bench_wall_depth)/2)} ${bench_base_height}" rpy="0 0 0"/>
     </joint>
 
 </robot>

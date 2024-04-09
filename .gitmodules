@@ -1,6 +1,6 @@
-[submodule "test_bench_ws/src/libsick_ldmrs"]
-	path = test_bench_ws/src/libsick_ldmrs
+[submodule "ROS2_Master/test_bench_ws/src/libsick_ldmrs"]
+	path = ROS2_Master/test_bench_ws/src/libsick_ldmrs
 	url = https://github.com/SICKAG/libsick_ldmrs.git
-[submodule "test_bench_ws/src/sick_scan_xd"]
-	path = test_bench_ws/src/sick_scan_xd
+[submodule "ROS2_Master/test_bench_ws/src/sick_scan_xd"]
+	path = ROS2_Master/test_bench_ws/src/sick_scan_xd
 	url = https://github.com/SICKAG/sick_scan_xd.git

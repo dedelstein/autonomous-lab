@@ -17,7 +17,7 @@
         </visual>
     </link>
     <joint name="LIDAR_joint" type="fixed">
-        <parent link="bench_footprint"/>
+        <parent link="zero_point"/>
         <child link="LIDAR"/>
         <origin xyz="${LIDAR_xyz}" rpy="${LIDAR_rot}"/>
     </joint>
