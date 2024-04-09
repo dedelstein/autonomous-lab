@@ -30,7 +30,7 @@ RUN \
 
 # Locale setup
 RUN \
-	apt-get update && apt-get install locales \
+    apt-get update && apt-get install locales \
 	&& locale-gen en_US en_US.UTF-8 \
 	&& update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
 	&& export LANG=en_US.UTF-8
@@ -69,10 +69,12 @@ RUN \
 #    && apt-get -y install cuda-toolkit-12-3 \
 #    && apt-get install -y cuda-drivers
 
+COPY . /code
+WORKDIR /code
+
 # Clone and initialize test bench workspace
 RUN \
-    git clone https://github.com/dedelstein/autonomous-lab.git \
-    && cd autonomous-lab/test_bench_ws \
+    cd test_bench_ws \
     && ./init_ws.sh
     
 # Install Intel RealSense Software & ROS Drivers
@@ -84,5 +86,3 @@ RUN \
 	librealsense2-dkms \
 	librealsense2-utils \
 	ros-iron-realsense2-*
-
-WORKDIR autonomous-lab/test_bench_ws/

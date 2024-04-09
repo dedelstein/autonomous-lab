@@ -1,0 +1,27 @@
+services:
+
+  ros2_bridge:
+    build: ./ROS2_Bridge
+    image: ros2_bridge
+    network_mode: host
+    volumes:
+      - "/dev/shm:/dev/shm"
+    container_name: ros2_bridge
+
+  ros2_master:
+    build:
+      context: ./ROS2_Master
+    image: ros2_master
+    network_mode: host
+    volumes:
+      - "./ROS2_Master:/code"
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+      - "/dev/shm:/dev/shm"
+    devices:
+      - "/dev/dri:/dev/dri"
+      - "/dev/video2:/dev/video2"
+    environment:
+      DISPLAY: :0
+    stdin_open: true 
+    tty: true
+    container_name: ros2_master
