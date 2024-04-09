@@ -5,5 +5,7 @@
     <xacro:include filename="FLIR.xacro"/>
     <xacro:include filename="LIDAR.xacro"/>
     <xacro:include filename="REALSENSE.xacro"/> 
+    <xacro:include filename="MARVELMIND.xacro"/> 
+    <xacro:include filename="BNO055.xacro"/> 
 
 </robot>

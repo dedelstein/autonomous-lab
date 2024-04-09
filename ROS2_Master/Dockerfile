@@ -73,6 +73,7 @@ COPY . /code
 WORKDIR /code
 
 # Clone and initialize test bench workspace
+# This command builds the various ROS packages in test_bench_ws/src/ in a non-crashing order
 RUN \
     cd test_bench_ws \
     && ./init_ws.sh
