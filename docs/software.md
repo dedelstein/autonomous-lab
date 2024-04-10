@@ -55,28 +55,45 @@ sudo apt-get install git-all
 
 ### Setting up the Test Bench with Docker
 ```bash
-# Build the docker image and create the volume (this takes time)
-sudo docker image build --tag test-bench .
-sudo docker volume create test-bench
+# Add docker to xhost
+sudo xhost +local:docker
 
-# Mount the docker volume using rocker
+# Clone the primary git repo
+git clone https://github.com/dedelstein/autonomous-lab
+
+# Enter the repo root and initialize git submodules
+cd autonomous-lab
+git submodule update --init
+
+# Build the docker images (this takes time)
+# If you have problems try adding --no-cache to the end of the command
+sudo docker compose build ros2_bridge
+sudo docker compose build ros2_master
+
+# Mount the main docker image using rocker
 # NB: --privileged gives us access to ports (usb, etc.), there's fancier and more
 # secure ways to do this if someone has the time or inclination
-sudo rocker --x11 --privileged test-bench bash
+sudo rocker --x11 --privileged ros2_master bash
+
+# If you need to, mount the ros1_bridge for ROS1-ROS2 communication
+# ( NB - ros1_bridge waits for a ROS 1 master node at the default ROS Master URI http://localhost:11311 )
+sudo docker compose up ros2_bridge
 ```
 
 ## Usage
 
 ### Test Bench ROS Nodes
 ```bash
-# Navigate to the test bench workspace and source the overlay
+# Navigate to the test bench workspace and source the local overlay
 cd autonomous-lab/test_bench_ws  && source install/setup.bash
 
 # Launch the following nodes from separate terminal windows
 # (convenient to use tmux with multiple panes in this case)
+# NB as of 9.4.2024 FLIR and RealSense have some kind of fatal conflict
 ros2 launch test_bench test_bench.launch.py
 ros2 launch test_bench FLIR.launch.py
 ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.1.18 frame_id:=LIDAR
+ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true
 
 # To end any particular node, just type CTRL-c in a window with an active node
 ```
