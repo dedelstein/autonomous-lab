@@ -69,15 +69,6 @@ RUN \
 #    && apt-get -y install cuda-toolkit-12-3 \
 #    && apt-get install -y cuda-drivers
 
-COPY . /code
-WORKDIR /code
-
-# Clone and initialize test bench workspace
-# This command builds the various ROS packages in test_bench_ws/src/ in a non-crashing order
-RUN \
-    cd test_bench_ws \
-    && ./init_ws.sh
-    
 # Install Intel RealSense Software & ROS Drivers
 RUN \
     mkdir -p /etc/apt/keyrings \
@@ -87,3 +78,25 @@ RUN \
 	librealsense2-dkms \
 	librealsense2-utils \
 	ros-iron-realsense2-*
+	
+# Install Necessary Utils for Serial/UART and IMU
+RUN \
+    apt install -y python3-smbus \
+    && pip install pyserial  
+    
+COPY . /code
+WORKDIR /code
+
+# Clone and initialize test bench workspace
+# This command builds the various ROS packages in test_bench_ws/src/ in a non-crashing order
+RUN \
+    (cd test_bench_ws && ./init_ws.sh)
+    
+# Create Links to custom Parameter files
+RUN \
+    rm test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
+    && rm test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
+    && rm test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml \
+    && ln  sensor_params/bno055_params.yaml test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
+    && ln  sensor_params/marvelmind_ros2_config.yaml test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
+    && ln  sensor_params/FLIR_camera.yaml test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml

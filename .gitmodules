@@ -4,3 +4,6 @@
 [submodule "ROS2_Master/test_bench_ws/src/sick_scan_xd"]
 	path = ROS2_Master/test_bench_ws/src/sick_scan_xd
 	url = https://github.com/SICKAG/sick_scan_xd.git
+[submodule "ROS2_Master/test_bench_ws/src/bno055"]
+	path = ROS2_Master/test_bench_ws/src/bno055
+	url = https://github.com/flynneva/bno055.git

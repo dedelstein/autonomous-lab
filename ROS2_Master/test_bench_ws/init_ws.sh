@@ -13,4 +13,5 @@ colcon build --packages-select test_bench && \
 source ./install/setup.bash && \
 colcon build --packages-select marvelmind_ros2_msgs && \
 colcon build --packages-select marvelmind_ros2 && \
-source ./install/setup.bash
+source ./install/setup.bash && \
+colcon build --packages-select bno055
