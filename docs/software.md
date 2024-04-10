@@ -3,9 +3,13 @@
 OS: Ubuntu 22.04 LTS  
 ROS Distro: [Iron](https://docs.ros.org/en/iron/Releases/Release-Iron-Irwini.html)  
   
-Drivers:  
+ROS2 Drivers:  
  - [sick_scan_xd](https://github.com/SICKAG/sick_scan_xd/)  
  - [spinnaker camera driver](https://index.ros.org/p/spinnaker_camera_driver/)  
+ - [BNO055 driver](https://github.com/flynneva/bno055)
+ - [Marvelmind RTLS driver](https://github.com/MarvelmindRobotics/marvelmind_ros2_upstream)
+ - [Marvelmind RTLS msg](https://github.com/MarvelmindRobotics/marvelmind_ros2_msgs_upstream)
+ - [RealSense Driver](https://github.com/IntelRealSense/realsense-ros)
 
 Main GitHub:  
  - [autonomous-lab](https://github.com/dedelstein/autonomous-lab)
@@ -75,7 +79,7 @@ sudo docker compose build ros2_master
 # secure ways to do this if someone has the time or inclination
 sudo rocker --x11 --privileged ros2_master bash
 
-# If you need to, mount the ros1_bridge for ROS1-ROS2 communication
+# If you need to, mount the ros1_bridge for ROS1-ROS2 communication in a separate terminal window
 # ( NB - ros1_bridge waits for a ROS 1 master node at the default ROS Master URI http://localhost:11311 )
 sudo docker compose up ros2_bridge
 ```
@@ -90,10 +94,13 @@ cd autonomous-lab/test_bench_ws  && source install/setup.bash
 # Launch the following nodes from separate terminal windows
 # (convenient to use tmux with multiple panes in this case)
 # NB as of 9.4.2024 FLIR and RealSense have some kind of fatal conflict
+# -- no solution found yet besides rebooting and only running one or the other
 ros2 launch test_bench test_bench.launch.py
 ros2 launch test_bench FLIR.launch.py
 ros2 launch sick_scan_xd sick_mrs_6xxx.launch.py hostname:=192.168.1.18 frame_id:=LIDAR
 ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true
+ros2 launch bno055 bno055.launch.py
+ros2 launch marvelmind_ros marvelmind_ros.launch.py
 
 # To end any particular node, just type CTRL-c in a window with an active node
 ```
@@ -108,7 +115,7 @@ rviz2 -d ./test-bench.rviz
 
 ### How Does This Work?
 
-The [Dockerfile](https://github.com/dedelstein/autonomous-lab/blob/main/Dockerfile) in the [github project](https://github.com/dedelstein/autonomous-lab) includes a set of instructions to install necessary programs and the workspace into a docker container.  This container can be mounted using rocker, which allows for gui interactivity and use of nvidia drivers.  We have a base ROS install on our host volume, and then we have an 'overlay' in our test_bench_ws workspace.  If you are using the docker container, this is at /autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.
+The [Dockerfile](https://github.com/dedelstein/autonomous-lab/blob/main/Dockerfile) in the [github project](https://github.com/dedelstein/autonomous-lab) includes a set of instructions to install necessary programs and the workspace into a docker container.  This container can be mounted using rocker, which allows for gui interactivity and use of nvidia drivers.  We have a base ROS install on our host volume, and then we have an 'overlay' in our test_bench_ws workspace.  If you are using the docker container, this is at /autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.  Many of the drivers make use of custom parameter .yaml files located in ROS2_Master/sensor_params.
 
 #### URDF
 

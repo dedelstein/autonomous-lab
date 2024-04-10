@@ -97,6 +97,6 @@ RUN \
     rm test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
     && rm test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
     && rm test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml \
-    && ln  sensor_params/bno055_params.yaml test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
-    && ln  sensor_params/marvelmind_ros2_config.yaml test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
-    && ln  sensor_params/FLIR_camera.yaml test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml
+    && ln -s sensor_params/bno055_params.yaml test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
+    && ln -s sensor_params/marvelmind_ros2_config.yaml test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
+    && ln -s sensor_params/FLIR_camera.yaml test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml
