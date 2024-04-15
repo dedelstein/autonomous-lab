@@ -21,6 +21,8 @@ RUN \
 	wget \
 	cmake \
 	python3-pip \
+	usbutils \
+	iproute2 \
     && apt autoremove -y
 
 # pip setup & installing mkdocs for documentation
@@ -56,7 +58,8 @@ RUN \
         ros-iron-spinnaker-camera-driver \
 	ros-iron-diagnostic-updater \
 	ros-iron-diagnostic-msgs \
- 	ros-iron-image-transport-plugins
+ 	ros-iron-image-transport-plugins \
+ 	libgtk2.0-0
 
 # Install CUDA toolkit
 #RUN \
@@ -83,20 +86,5 @@ RUN \
 RUN \
     apt install -y python3-smbus \
     && pip install pyserial  
-    
-COPY . /code
-WORKDIR /code
 
-# Clone and initialize test bench workspace
-# This command builds the various ROS packages in test_bench_ws/src/ in a non-crashing order
-RUN \
-    (cd test_bench_ws && ./init_ws.sh)
-    
-# Create Links to custom Parameter files
-RUN \
-    rm test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
-    && rm test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
-    && rm test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml \
-    && ln -s sensor_params/bno055_params.yaml test_bench_ws/install/bno055/share/bno055/config/bno055_params.yaml  \
-    && ln -s sensor_params/marvelmind_ros2_config.yaml test_bench_ws/install/marvelmind_ros2/share/marvelmind_ros2/config/marvelmind_ros2_config.yaml \
-    && ln -s sensor_params/FLIR_camera.yaml test_bench_ws/install/test_bench/share/test_bench/config/FLIR_camera.yaml
+WORKDIR /code

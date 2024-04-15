@@ -6,10 +6,10 @@ ROS Distro: [Iron](https://docs.ros.org/en/iron/Releases/Release-Iron-Irwini.htm
 ROS2 Drivers:  
  - [sick_scan_xd](https://github.com/SICKAG/sick_scan_xd/)  
  - [spinnaker camera driver](https://index.ros.org/p/spinnaker_camera_driver/)  
- - [BNO055 driver](https://github.com/flynneva/bno055)
- - [Marvelmind RTLS driver](https://github.com/MarvelmindRobotics/marvelmind_ros2_upstream)
- - [Marvelmind RTLS msg](https://github.com/MarvelmindRobotics/marvelmind_ros2_msgs_upstream)
- - [RealSense Driver](https://github.com/IntelRealSense/realsense-ros)
+ - [BNO055 driver](https://github.com/flynneva/bno055)  
+ - [Marvelmind RTLS driver](https://github.com/MarvelmindRobotics/marvelmind_ros2_upstream)  
+ - [Marvelmind RTLS msg](https://github.com/MarvelmindRobotics/marvelmind_ros2_msgs_upstream)  
+ - [RealSense Driver](https://github.com/IntelRealSense/realsense-ros)  
 
 Main GitHub:  
  - [autonomous-lab](https://github.com/dedelstein/autonomous-lab)
@@ -65,7 +65,7 @@ sudo xhost +local:docker
 # Clone the primary git repo
 git clone https://github.com/dedelstein/autonomous-lab
 
-# Enter the repo root and initialize git submodules
+# Enter the repo root and initialize git submodules (defined in autonomous-lab/.gitmodules)
 cd autonomous-lab
 git submodule update --init
 
@@ -77,7 +77,13 @@ sudo docker compose build ros2_master
 # Mount the main docker image using rocker
 # NB: --privileged gives us access to ports (usb, etc.), there's fancier and more
 # secure ways to do this if someone has the time or inclination
-sudo rocker --x11 --privileged ros2_master bash
+sudo rocker --x11 --privileged -v .:/code ros2_master bash
+# OR
+# Spin up and execute image using docker compose
+sudo docker compose up -d ros2_master
+sudo docker exec -it ros2_master bash
+
+# You should be in the /code directory in the docker container, which is a mountpoint for your local autonomous-lab folder
 
 # If you need to, mount the ros1_bridge for ROS1-ROS2 communication in a separate terminal window
 # ( NB - ros1_bridge waits for a ROS 1 master node at the default ROS Master URI http://localhost:11311 )
@@ -88,8 +94,10 @@ sudo docker compose up ros2_bridge
 
 ### Test Bench ROS Nodes
 ```bash
-# Navigate to the test bench workspace and source the local overlay
-cd autonomous-lab/test_bench_ws  && source install/setup.bash
+# Navigate to the test bench workspace and build the workspace if not already done
+cd /code/ROS2_Master/test_bench_ws  && ./init_ws.sh
+# source the local overlay
+source install/setup.bash
 
 # Launch the following nodes from separate terminal windows
 # (convenient to use tmux with multiple panes in this case)
@@ -107,7 +115,7 @@ ros2 launch marvelmind_ros marvelmind_ros.launch.py
 
 ## rviz2
 ```bash
-# Launch rviz2 from test_bench_ws and load the custom setup
+# Launch rviz2 from test_bench_ws and load the custom setup (this setup may need tweaking)
 rviz2 -d ./test-bench.rviz
 ```
 
@@ -117,9 +125,23 @@ rviz2 -d ./test-bench.rviz
 
 The [Dockerfile](https://github.com/dedelstein/autonomous-lab/blob/main/Dockerfile) in the [github project](https://github.com/dedelstein/autonomous-lab) includes a set of instructions to install necessary programs and the workspace into a docker container.  This container can be mounted using rocker, which allows for gui interactivity and use of nvidia drivers.  We have a base ROS install on our host volume, and then we have an 'overlay' in our test_bench_ws workspace.  If you are using the docker container, this is at /autonomous-lab/test_bench_ws.  This workspace contains three packages (so far) located in the test_bench_ws/src/ directory: test_bench, sick_scan_xd, and libsick_ldmrs.  libsick_ldmrs is a support package for sick_scan_xd, which is the driver for our SICK LIDAR.  test_bench includes launchers for the FLIR camera and our robot_state_publisher, which uses [URDF](#urdf) files to publish the relationship between various frames in the test bench.  Many of the drivers make use of custom parameter .yaml files located in ROS2_Master/sensor_params.
 
+#### Parameter Files
+
+In ROS2_Master/sensor_params there should be symlinks for the parameter files for most of the above described nodes once the workspace has been built with colcon.  Sometimes you need to change something in here like /dev/ttyACM1 vs /dev/ttyACM0, etc.
+
+
+#### Marvelmind RTLS
+
+First, you need to run the Marvelmind dashboard.  This can be done like so:
+```bash
+cd /code/Marvelmind_RTLS/
+./dashboard.sh
+```
+Next you can set up the local map and then run the MarvelMind ROS2 Node. To understand how to use the marvelmind stuff, rtfm.  Sometimes it's necessary to unplug the IMU and the base station from USB and just plug in the modem first. The existing sensors are all mapped to device 2-6, with device 5 as the 'base hedgehog'.
+
 #### URDF
 
-The Unified Robot Description Format for our robot.  You can look at the files in autonomous-lab/test_bench_ws/src/test_bench/urdf/ folder or [here](https://github.com/dedelstein/autonomous-lab/tree/main/test_bench_ws/src/test_bench/urdf) to understand the current structure.  The files use [XACRO](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Using-Xacro-to-Clean-Up-a-URDF-File.html), which is just a convenient tool to add a few variables to [urdf](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html) files, which are really just xml with a few conventions.  The most important thing here is the joint structure, which we refer to in our launch files, as we need spatial context for different data sources.  ![alt text](https://raw.githubusercontent.com/dedelstein/autonomous-lab/main/docs/images/tf_diag.png "TF2 frame diagram").  
+The Unified Robot Description Format for our robot.  You can look at the files in test_bench_ws/src/test_bench/urdf/ folder or [here](https://github.com/dedelstein/autonomous-lab/tree/main/ROS2_Master/test_bench_ws/src/test_bench/urdf) to understand the current structure.  The files use [XACRO](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Using-Xacro-to-Clean-Up-a-URDF-File.html), which is just a convenient tool to add a few variables to [urdf](https://docs.ros.org/en/iron/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html) files, which are really just xml with a few conventions.  The most important thing here is the joint structure, which we refer to in our launch files, as we need spatial context for different data sources.  ![alt text](https://raw.githubusercontent.com/dedelstein/autonomous-lab/main/docs/images/tf_diag.png "TF2 frame diagram").  
 
 #### Packages, Nodes & Launchers
 

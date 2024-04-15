@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="GPS_dims" value="0.1 0.1 0.1"/>
+    <xacro:property name="GPS_xyz" value=".02 .02 .808"/>
+    <xacro:property name="GPS_rot" value="0.0 0.0 0.0"/>
+
+    <!-- GPS Link-->
+    <link name="GPS" type="fixed">
+        <visual>
+            <geometry>
+                <box size="${GPS_dims}"/>
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="GPS_joint" type="fixed">
+        <parent link="zero_point"/>
+        <child link="GPS"/>
+        <origin xyz="${GPS_xyz}" rpy="${GPS_rot}"/>
+    </joint>
+    
+</robot>

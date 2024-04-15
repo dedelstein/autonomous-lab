@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="LIDAR_dims" value="0.1 0.1 0.1"/>
-    <xacro:property name="LIDAR_xyz" value="0.0 0.0 2.0"/>
+    <xacro:property name="LIDAR_xyz" value="0.26 0.495 0.69"/>
     <xacro:property name="LIDAR_rot" value="0.0 0.0 0.0"/>
 
     <!-- LIDAR Link-->

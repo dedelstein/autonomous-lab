@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="MM_dims" value="0.1 0.1 0.1"/>
-    <xacro:property name="MM_xyz" value="0.0 0.0 2.0"/>
+    <xacro:property name="MM_xyz" value="1.18 .72 .808"/>
     <xacro:property name="MM_rot" value="0.0 0.0 0.0"/>
 
     <!-- MM Link-->

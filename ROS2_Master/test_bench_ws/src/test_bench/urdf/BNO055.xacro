@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="BNO_dims" value="0.1 0.1 0.1"/>
-    <xacro:property name="BNO_xyz" value="0.0 0.0 2.0"/>
+    <xacro:property name="BNO_xyz" value="0.587 0.68 .232"/>
     <xacro:property name="BNO_rot" value="0.0 0.0 0.0"/>
 
     <!-- BNO Link-->

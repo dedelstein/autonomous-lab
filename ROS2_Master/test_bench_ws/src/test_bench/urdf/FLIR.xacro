@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="FLIR_dims" value="0.1 0.1 0.1"/>
-    <xacro:property name="FLIR_xyz" value="0.0 0.0 2.0"/>
+    <xacro:property name="FLIR_xyz" value=".938 0.63 .34"/>
     <xacro:property name="FLIR_rot" value="0.0 0.0 0.0"/>
 
     <!-- FLIR Link-->
